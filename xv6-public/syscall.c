@@ -132,6 +132,32 @@ static int (*syscalls[])(void) = {
 [SYS_restart] sys_restart,
 };
 
+const char *syscall_names[23] = {
+    "sys_fork",
+    "sys_exit",
+    "sys_wait",
+    "sys_pipe",
+    "sys_read",
+    "sys_kill",
+    "sys_exec",
+    "sys_fstat",
+    "sys_chdir",
+    "sys_dup",
+    "sys_getpid",
+    "sys_sbrk",
+    "sys_sleep",
+    "sys_uptime",
+    "sys_open",
+    "sys_write",
+    "sys_mknod",
+    "sys_unlink",
+    "sys_link",
+    "sys_mkdir",
+    "sys_close",
+    "sys_shutdown",
+    "sys_restart",
+};
+
 void
 syscall(void)
 {
@@ -140,6 +166,7 @@ syscall(void)
 
   num = curproc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+    cprintf("%s -> %d\n", syscall_names[num-1], num);
     curproc->tf->eax = syscalls[num]();
   } else {
     cprintf("%d %s: unknown sys call %d\n",
